@@ -5,7 +5,7 @@
 SQL (Structured Query Language) é uma linguagem para gerenciar e consultar bancos de dados relacionais (RDBMS).
 Esses bancos utilizam tabelas com linhas e colunas, e as relações entre elas são definidas por chaves.
 
-#### ✔ Características de bancos SQL:
+#### Características de bancos SQL:
 
 - Estrutura rígida (schema fixo)
 - Dados altamente estruturados
@@ -13,7 +13,7 @@ Esses bancos utilizam tabelas com linhas e colunas, e as relações entre elas s
 - Suporte forte a transações ACID
 - Ideal para aplicações que exigem alta integridade dos dados
 
-#### ✔ Exemplos de softwares SQL (RDBMS):
+#### Exemplos de softwares SQL (RDBMS):
 
 - MySQL
 - PostgreSQL
@@ -26,7 +26,7 @@ O que é NoSQL
 
 NoSQL (Not Only SQL) é uma categoria de bancos projetados para lidar com grandes volumes de dados, dados sem estrutura fixa ou com necessidade de alta escalabilidade horizontal.
 
-✔ Características de bancos NoSQL:
+#### Características de bancos NoSQL:
 
 - Estrutura flexível (schema-less)
 - Escalabilidade horizontal facilitada (clusters)
@@ -40,7 +40,7 @@ NoSQL (Not Only SQL) é uma categoria de bancos projetados para lidar com grande
 
 Colunas largas
 
-#### ✔ Exemplos de softwares NoSQL:
+#### Exemplos de softwares NoSQL:
 
 - MongoDB (documento)
 - Cassandra (colunas largas)
@@ -165,4 +165,49 @@ D — Durability (Durabilidade)
 - Crucial para sistemas financeiros, e-commerce, estoques etc.
 - Facilita desenvolvimento ao garantir previsibilidade
 
-SQL normalmente é totalmente ACID, NoSQL pode ser parcialmente ACID ou focado em BASE (mais flexível e distribuído).
+*SQL normalmente é totalmente ACID, NoSQL pode ser parcialmente ACID ou focado em BASE (mais flexível e distribuído).*
+
+### MODELAGEM DE DADOS
+
+#### O que é Modelagem de Dados?
+
+Modelagem de dados é o processo de organizar, estruturar e representar os dados de uma organização ou sistema. Ela define como os dados serão armazenados, relacionados e acessados, servindo como base para a criação de bancos de dados eficientes e confiáveis.
+
+### Objetivos da Modelagem de Dados
+- Garantir clareza sobre as informações do sistema.
+- Reduzir redundâncias e evitar inconsistências.
+- Facilitar a compreensão por analistas, desenvolvedores e usuários.
+- Apoiar a criação de bancos de dados estruturados e bem planejados.
+- Melhorar a qualidade e integridade dos dados.
+
+### Níveis da Modelagem
+
+#### 1. Modelo Conceitual
+- Visão geral do sistema (o “que” será armazenado).
+- Representa entidades e relacionamentos.
+- Não tem detalhes técnicos.
+- Ferramenta mais comum: Diagrama Entidade-Relacionamento (DER).
+
+#### 2. Modelo Lógico
+- Detalha atributos, chaves e tipos de relacionamento.
+- Independente de tecnologia, mas mais técnico.
+- Usa normalização.
+
+#### 3. Modelo Físico
+- Descreve como será implementado no banco de dados escolhido.
+- Inclui tipos de dados, índices, restrições, tabelas e performance.
+
+### Principais Elementos
+- Entidades: Objetos do mundo real (Cliente, Pedido).
+- Atributos: Informações sobre as entidades (nome, preço).
+- Relacionamentos: Como as entidades se conectam (1:N, N:N).
+
+#### Chaves:
+- Primária (identifica um registro).
+- Estrangeira (liga tabelas).
+
+### Benefícios
+- Melhor compreensão do sistema.
+- Base sólida para desenvolvimento.
+- Banco de dados mais eficiente e seguro.
+- Facilita manutenção e evolução do sistema.
