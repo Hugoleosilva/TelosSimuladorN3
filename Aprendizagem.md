@@ -1,5 +1,34 @@
 ### BANCO DE DADOS
 
+### SGBD
+
+#### O que é um SGBD?
+
+É um software responsável por criar, gerenciar e manipular bancos de dados. Ele permite que usuários e aplicações armazenem, consultem, atualizem e controlem informações de forma segura e organizada.
+
+#### O que o SGBD faz?
+
+- Cria e organiza tabelas e estruturas de dados.
+- Permite consultas (como o SQL).
+- Controla acesso de usuários.
+- Garante segurança, integridade e consistência dos dados.
+- Faz backups e recuperações.
+- Gerencia transações (ACID).
+
+#### Exemplos de SGBDs
+
+- MySQL
+- PostgreSQL
+- Oracle Database
+- SQL Server
+- SQLite
+- MariaDB
+- MongoDB (NoSQL)
+
+#### Em resumo
+
+Um SGBD é o programa que controla o banco de dados, garantindo que ele funcione corretamente, com segurança e eficiência.
+
 #### O que é SQL
 
 SQL (Structured Query Language) é uma linguagem para gerenciar e consultar bancos de dados relacionais (RDBMS).
@@ -171,7 +200,7 @@ D — Durability (Durabilidade)
 
 #### O que é Modelagem de Dados?
 
-Modelagem de dados é o processo de organizar, estruturar e representar os dados de uma organização ou sistema. Ela define como os dados serão armazenados, relacionados e acessados, servindo como base para a criação de bancos de dados eficientes e confiáveis.
+Modelagem de dados é o processo de organizar, estruturar e representar os dados de uma organização ou sistema. Ela define como os dados serão armazenados, relacionados e acessados, servindo como base para a criação de bancos de dados eficientes e confiáveis. É como um mapa que nos ajuda a entender como os dados estão interligados e como eles podem ser usados.
 
 ### Objetivos da Modelagem de Dados
 - Garantir clareza sobre as informações do sistema.
@@ -211,3 +240,64 @@ Modelagem de dados é o processo de organizar, estruturar e representar os dados
 - Base sólida para desenvolvimento.
 - Banco de dados mais eficiente e seguro.
 - Facilita manutenção e evolução do sistema.
+
+### RELACIONAMENTOS
+
+#### O que são Relacionamentos em Banco de Dados?
+
+Relacionamentos são ligações entre tabelas que mostram como os dados estão conectados.
+Eles permitem organizar as informações de forma estruturada, evitando redundâncias e mantendo a integridade dos dados.
+Essas ligações são feitas principalmente usando chaves primárias (PK) e chaves estrangeiras (FK).
+
+#### Tipos de Relacionamentos
+1. Relacionamento 1 para 1 (1:1)
+
+Uma linha de uma tabela está relacionada a no máximo uma linha de outra tabela.
+
+#### Exemplo:
+- Uma pessoa → um RG
+- Tabela PESSOA (PK: id_pessoa)
+- Tabela RG (PK/FK: id_pessoa)
+
+*Usado quando há informações específicas que não precisam ficar na mesma tabela.*
+
+2. Relacionamento 1 para Muitos (1:N)
+
+Uma linha da tabela A pode se relacionar com várias linhas da tabela B, mas cada linha de B se relaciona com uma só linha de A.
+
+#### Exemplo:
+- Um cliente → vários pedidos
+- Tabela CLIENTE (PK: id_cliente)
+- Tabela PEDIDO (FK: id_cliente)
+
+*Este é o tipo de relacionamento mais comum.*
+
+3. Relacionamento Muitos para Muitos (N:N)
+
+Uma linha da tabela A pode se relacionar com várias da tabela B e vice-versa.
+
+#### Exemplo:
+
+- Alunos ↔ Disciplinas
+- Um aluno pode cursar várias disciplinas, e cada disciplina pode ter vários alunos.
+
+Como é implementado?
+Criando uma tabela intermediária, chamada Tabela Associativa:
+
+ ALUNO
+ DISCIPLINA
+ ALUNO_DISCIPLINA (com PK formada por: id_aluno + id_disciplina)
+
+#### Chaves e Integridade
+
+- Chave Primária (PK): identifica unicamente um registro.
+- Chave Estrangeira (FK): cria a ligação entre tabelas.
+- Integridade Referencial: garante que não existam relações inválidas (ex: pedido sem cliente cadastrado).
+
+#### Por que os relacionamentos são importantes?
+
+- Reduzem redundância (não repetir dados).
+- Garantem consistência.
+- Facilitam consultas complexas.
+- Mantêm a integridade da informação.
+
