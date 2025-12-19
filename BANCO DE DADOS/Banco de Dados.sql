@@ -1,4 +1,4 @@
-BANCO DE DADOS
+--BANCO DE DADOS
 
 CREATE DATABASE Telos_Exercicios --criando Banco de Dados
 
