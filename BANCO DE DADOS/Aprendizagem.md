@@ -301,3 +301,102 @@ Criando uma tabela intermediária, chamada Tabela Associativa:
 - Facilitam consultas complexas.
 - Mantêm a integridade da informação.
 
+### CONTRAINTS
+
+#### O que são Constraints?
+São regras aplicadas às colunas ou tabelas de um banco de dados para garantir a integridade, precisão e consistência dos dados.
+Elas limitam os valores que podem ser inseridos, atualizados ou mantidos no banco.
+
+#### Tipos principais de Constraints em SQL
+1. PRIMARY KEY (Chave Primária)
+- Identifica unicamente cada registro em uma tabela.
+- Não pode ter valores duplicados nem NULL.
+
+#### Exemplo:
+
+     CREATE TABLE Clientes (
+        id INT PRIMARY KEY,
+        nome VARCHAR(100)
+        );
+    
+2. FOREIGN KEY (Chave Estrangeira)
+- Garante a integridade referencial entre tabelas.
+- O valor em uma coluna deve corresponder a um valor da PRIMARY KEY em outra tabela (ou ser NULL, se permitido).
+
+#### Exemplo: 
+
+      CREATE TABLE Pedidos (
+         id INT PRIMARY KEY,
+         cliente_id INT,
+         FOREIGN KEY (cliente_id) REFERENCES Clientes(id)
+         );
+
+3. UNIQUE
+- Garante que todos os valores em uma coluna (ou conjunto de colunas) sejam diferentes.
+- Pode haver múltiplas colunas UNIQUE em uma tabela, e aceita NULL (mas só um NULL dependendo do SGBD).
+
+#### Exemplo:
+
+      CREATE TABLE Usuarios (
+         id INT PRIMARY KEY,
+         email VARCHAR(100) UNIQUE
+         );
+
+  4. NOT NULL
+- Impede que um campo seja deixado sem valor (NULL).
+
+#### Exemplo:
+
+       CREATE TABLE Produtos (
+          id INT PRIMARY KEY,
+          nome VARCHAR(100) NOT NULL
+          );  
+
+ 5. CHECK
+- Define uma condição que cada linha deve satisfazer.
+
+#### Exemplo (garantir que idade seja maior que 0):
+
+        CREATE TABLE Pessoas (
+           id INT PRIMARY KEY,
+           idade INT CHECK (idade > 0)
+           );   
+
+  6. DEFAULT
+- Define um valor padrão para a coluna, caso nenhum seja especificado na inserção.
+
+#### Exemplo:
+
+        CREATE TABLE Logs (
+           id INT PRIMARY KEY,
+           data_criacao DATE DEFAULT CURRENT_DATE
+           );   
+
+### Exemplo combinado
+
+        CREATE TABLE Funcionarios (
+           id INT PRIMARY KEY,
+           cpf VARCHAR(14) UNIQUE NOT NULL,
+           nome VARCHAR(100) NOT NULL,
+           departamento_id INT,
+           salario DECIMAL(10,2) CHECK (salario >= 0),
+           data_contratacao DATE DEFAULT CURRENT_DATE,
+           FOREIGN KEY (departamento_id) REFERENCES Departamentos(id)
+           );
+
+### Importância das Constraints
+- Previnem dados incorretos (ex: idade negativa, e-mail duplicado).
+- Mantêm relações consistentes (ex: não permite um pedido sem cliente existente).
+- Documentam as regras de negócio diretamente no esquema do banco.
+- Reduzem a lógica necessária na aplicação (o BD já valida).  
+
+### Cuidados ao usar Constraints
+Performance: 
+- Em alguns cenários de carga massiva, pode ser melhor validar antes no app e desativar constraints temporariamente.
+
+Flexibilidade: 
+- Às vezes regras complexas ou dinâmicas são melhor tratadas por triggers ou aplicação.
+
+Ciclo de vida: 
+- Constraints podem ser adicionadas, removidas ou desabilitadas (DISABLE CONSTRAINT / ENABLE CONSTRAINT).
+
