@@ -400,3 +400,60 @@ Flexibilidade:
 Ciclo de vida: 
 - Constraints podem ser adicionadas, removidas ou desabilitadas (DISABLE CONSTRAINT / ENABLE CONSTRAINT).
 
+
+## O que são JOINs?
+
+JOINs são cláusulas usadas para combinar registros de duas ou mais tabelas com base em uma coluna relacionada entre elas.
+
+### Tipos Principais de JOINs
+
+#### 1. INNER JOIN (Junção Interna)
+
+Retorna apenas os registros que têm correspondência em ambas as tabelas.
+
+  SELECT *
+  FROM clientes c
+  INNER JOIN pedidos p ON c.id = p.cliente_id;
+
+*Resultado: Apenas clientes que fizeram pedidos.*
+
+#### 2. LEFT JOIN (Junção à Esquerda)
+
+Retorna todos os registros da tabela da esquerda e os correspondentes da direita. Se não houver correspondência, retorna NULL para as colunas da direita.
+
+  SELECT *
+  FROM clientes c
+  LEFT JOIN pedidos p ON c.id = p.cliente_id;
+
+*Resultado: Todos os clientes, mesmo os que não fizeram pedidos.*
+
+#### 3. RIGHT JOIN (Junção à Direita)
+
+Retorna todos os registros da tabela da direita e os correspondentes da esquerda. Se não houver correspondência, retorna NULL para as colunas da esquerda.
+
+  SELECT *
+  FROM clientes c
+  RIGHT JOIN pedidos p ON c.id = p.cliente_id;
+
+*Resultado: Todos os pedidos, mesmo os sem cliente associado (se permitido).*  
+
+#### 4. FULL JOIN (Junção Completa)
+
+Retorna todos os registros quando há correspondência em qualquer uma das tabelas.
+
+SELECT *
+FROM clientes c
+FULL JOIN pedidos p ON c.id = p.cliente_id;
+
+*Resultado: Todos os clientes e todos os pedidos.*
+
+### Quando usar:
+
+Use INNER JOIN quando precisar apenas dos registros relacionados.
+
+Use LEFT JOIN quando quiser todos os registros da "tabela principal".
+
+RIGHT JOIN é menos comum - geralmente se reorganiza as tabelas para usar LEFT JOIN.
+
+FULL JOIN é útil para auditorias ou quando precisa ver todos os dados de ambas as tabelas.
+
