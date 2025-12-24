@@ -174,4 +174,73 @@ SELECT c.id as client_id, c.name, o.id as order_id, o.total
 FROM client c
 FULL JOIN [order] o ON c.id = o.client_id 
 
+--Procedure para buscar o id da tabela client
+CREATE PROCEDURE get_client_details
+@client_id INT
+AS
+BEGIN
+        SELECT * FROM client WHERE id = @client_id
+END
 
+EXEC get_client_details @client_id = 1 
+--EXEC, nesse caso solicitando o cliente id 1 da tabela 
+
+--Procedure mais complexa
+CREATE PROCEDURE get_order_details
+@order_id INT,
+@client_id INT
+AS
+BEGIN
+        SELECT * FROM [order] 
+        WHERE id = @order_id AND client_id = @client_id
+END
+
+EXEC get_order_details @order_id = 1, @client_id = 1
+--EXEC, nesse caso solicitando o cliente id 1 e o pedido 1 da tabela 
+
+
+--Procedure modificando dados
+CREATE PROCEDURE add_new_order
+@client_id INT,
+@order_date DATE,
+@total DECIMAL(10, 2)
+AS
+BEGIN
+        INSERT INTO [order] (client_id, date, total)
+        VALUES (@client_id, @order_date, @total)
+END
+
+EXEC add_new_order @client_id = 1, @order_date = '2025-07-07', @total = 100.00
+
+SELECT * FROM [order]--consulta
+--adicionou as informações na tabela de pedidos
+
+
+--Criando uma função
+CREATE FUNCTION get_client_name --declaração inicial: nome da declaração
+(@client_id INT) --parâmetro de entrada
+RETURNS VARCHAR(100) --tipo de retorno esperado: texto
+AS
+BEGIN--lógica de negócio: begin/end
+    DECLARE @client_name VARCHAR(100); --
+    SELECT @client_name = name FROM client WHERE id = @client_id; --
+    RETURN @client_name --
+END
+
+SELECT dbo.get_client_name(1)--retorna o nome esperado para o id client
+
+
+--valued function 
+CREATE FUNCTION get_order_by_client --declaração inicial: nome da declaração
+(@client_id INT) --parâmetro de entrada
+RETURNS TABLE--tipo de retorno esperado: uma tabela
+AS
+RETURN
+(
+   SELECT * FROM [order] WHERE client_id = @client_id
+)
+
+END
+
+SELECT * FROM dbo.get_order_by_client(1)--consulta table valued function 
+--(nesse exemplo, retorna todos os pedidos de um cliente)

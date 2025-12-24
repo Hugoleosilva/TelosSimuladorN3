@@ -552,3 +552,198 @@ FULL JOIN é útil para auditorias ou quando precisa ver todos os dados de ambas
 - Precisa gerenciar transações
 
 - Vai executar operações em lote
+
+
+## Funções de Agregação e Subqueries em SQL
+
+### Funções de Agregação
+
+São funções que realizam cálculos em múltiplas linhas e retornam um único valor.
+
+### Principais Funções:
+
+- COUNT() - Conta o número de linhas
+
+- SUM() - Soma os valores
+
+- AVG() - Calcula a média
+
+- MIN() - Retorna o valor mínimo
+
+- MAX() - Retorna o valor máximo
+
+### Exemplos:
+
+Contar total de clientes:
+
+    SELECT COUNT(*) AS total_clientes
+    FROM clientes;
+
+Calcular média de salário:
+
+    SELECT AVG(salario) AS media_salarial
+    FROM funcionarios;
+
+Encontrar maior e menor preço:
+
+    SELECT 
+       MAX(preco) AS maior_preco,
+       MIN(preco) AS menor_preco
+    FROM produtos;
+
+Soma total de vendas por vendedor:
+
+    SELECT 
+       vendedor_id,
+       SUM(valor_venda) AS total_vendas
+    FROM vendas
+    GROUP BY vendedor_id;
+
+Múltiplas agregações:
+
+    SELECT 
+       departamento,
+       COUNT(*) AS num_funcionarios,
+       AVG(salario) AS media_salarial,
+       SUM(salario) AS folha_total
+    FROM funcionarios
+    GROUP BY departamento
+    HAVING AVG(salario) > 5000; --Filtra grupos
+
+
+## Subqueries (Subconsultas)
+
+São consultas aninhadas dentro de outras consultas SQL.
+
+### Tipos de Subqueries:
+1. Subquery Escalar (Retorna um único valor)
+
+Produtos com preço acima da média:
+
+    SELECT nome, preco
+    FROM produtos
+    WHERE preco > (SELECT AVG(preco) FROM produtos);
+
+Funcionário com maior salário:
+
+    SELECT nome, salario
+    FROM funcionarios
+    WHERE salario = (SELECT MAX(salario) FROM funcionarios);
+
+2. Subquery em FROM
+
+Média de salários por departamento:
+
+    SELECT 
+       departamento,
+       media_salarial
+    FROM (
+    SELECT 
+        departamento,
+        AVG(salario) AS media_salarial
+    FROM funcionarios
+    GROUP BY departamento
+    ) AS subquery
+    WHERE media_salarial > 6000;
+
+3. Subquery com IN    
+
+Clientes que fizeram pedidos:
+
+    SELECT nome, email
+    FROM clientes
+    WHERE cliente_id IN (
+    SELECT DISTINCT cliente_id 
+    FROM pedidos
+    );
+
+Produtos nunca vendidos:
+
+    SELECT nome
+    FROM produtos
+    WHERE produto_id NOT IN (
+    SELECT DISTINCT produto_id 
+    FROM itens_pedido
+    );
+
+4. Subquery Correlacionada
+
+Funcionários com salário acima da média do seu departamento:
+
+    SELECT 
+       nome,
+       salario,
+       departamento
+    FROM funcionarios f1
+    WHERE salario > (
+    SELECT AVG(salario)
+    FROM funcionarios f2
+    WHERE f2.departamento = f1.departamento
+    );
+
+5. Subquery com EXISTS
+
+Departamentos que têm funcionários:
+
+    SELECT nome
+    FROM departamentos d
+    WHERE EXISTS (
+    SELECT 1
+    FROM funcionarios f
+    WHERE f.departamento_id = d.departamento_id
+    );
+
+Clientes sem pedidos:
+
+    SELECT nome
+    FROM clientes c
+    WHERE NOT EXISTS (
+    SELECT 1
+    FROM pedidos p
+    WHERE p.cliente_id = c.cliente_id
+    );
+
+### Exemplo Combinado (Agregação + Subquery)
+
+Produtos que vendem mais que a média de vendas:
+
+    SELECT 
+        p.nome,
+        SUM(iv.quantidade) AS total_vendido
+    FROM produtos p
+    JOIN itens_venda iv ON p.produto_id = iv.produto_id
+    GROUP BY p.nome
+    HAVING SUM(iv.quantidade) > (
+    SELECT AVG(total_vendas)
+    FROM (
+            SELECT SUM(quantidade) AS total_vendas
+            FROM itens_venda
+            GROUP BY produto_id
+         )  
+            AS media_por_produto
+         );
+
+### Boas Práticas:
+
+- Performance: Subqueries correlacionadas podem ser lentas - considere JOINs
+
+- Legibilidade: Use aliases claros e formate o código
+
+- Teste: Teste subqueries separadamente primeiro
+
+- Índices: Garanta índices apropriados para colunas usadas em subqueries
+
+### Quando Usar:
+
+#### Funções de Agregação: 
+- Para sumarizar e analisar dados
+
+#### Subqueries: 
+- Quando precisa de resultados intermediários ou filtros complexos
+
+#### Alternativa a JOINs: 
+- Em alguns casos, subqueries são mais legíveis que JOINs complexos
+
+
+
+*Ambos os conceitos são fundamentais para consultas SQL avançadas e análise de dados eficiente.*
