@@ -457,3 +457,98 @@ RIGHT JOIN é menos comum - geralmente se reorganiza as tabelas para usar LEFT J
 
 FULL JOIN é útil para auditorias ou quando precisa ver todos os dados de ambas as tabelas.
 
+
+## FUNÇÃO (FUNCTION)
+
+#### Características:
+
+- Retorna um valor (escalar ou tabela)
+
+- Pode ser usada em expressões SQL (SELECT, WHERE, etc.)
+
+- Não pode modificar dados da tabela (em teoria, mas algumas SGBDs permitem com restrições)
+
+- Geralmente usada para cálculos e transformações
+
+- Executada com SELECT
+
+#### Exemplo:
+
+-- Função escalar
+
+     CREATE FUNCTION CalcularDesconto(@valor DECIMAL, @percentual INT)
+     RETURNS DECIMAL
+     AS
+     BEGIN
+           RETURN @valor * (@percentual / 100.0)
+     END
+
+-- Uso
+
+     SELECT nome, CalcularDesconto(preco, 10) as preco_com_desconto
+     FROM produtos;
+
+## PROCEDIMENTO ARMAZENADO (PROCEDURE)
+
+#### Características:
+
+- Não retorna valor (mas pode ter parâmetros de saída)
+
+- Pode modificar dados (INSERT, UPDATE, DELETE)
+
+- Pode conter lógica complexa com transações
+
+- Executada com EXEC ou EXECUTE
+
+- Pode retornar múltiplos resultadosets
+
+#### Exemplo:
+
+    CREATE PROCEDURE AtualizarEstoque
+        @produto_id INT,
+        @quantidade INT
+    AS
+    BEGIN
+        UPDATE produtos
+        SET estoque = estoque - @quantidade
+        WHERE id = @produto_id;
+    
+        INSERT INTO log_estoque (produto_id, data, quantidade)
+        VALUES (@produto_id, GETDATE(), @quantidade);
+    END
+
+-- Uso
+
+    EXEC AtualizarEstoque 123, 5;
+
+## PRINCIPAIS DIFERENÇAS
+
+| Critério | FUNCTION | PROCEDURE |
+|:--------:|:--------:|:---------:|
+| **Retorno** | Sempre retorna um valor | Pode não retornar nada |
+| **Uso em SQL** | Pode ser usada em consultas | Chamada separadamente |
+| **Modificação de dados** | Geralmente não permitida | Permitida |
+| **Transações** | Normalmente não gerencia | Pode gerenciar transações |
+| **Parâmetros OUTPUT** | Não suporta | Suporta |
+| **TRY-CATCH** | Não suporta em algumas SGBDs | Suporta tratamento de erros |
+
+
+## QUANDO USAR CADA UM
+
+#### Use FUNCTION quando:
+
+- Precisa de um resultado que será usado em uma consulta
+
+- Fazendo cálculos ou transformações de dados
+
+- Precisa de reutilização em várias partes do SQL
+
+#### Use PROCEDURE quando:
+
+- Precisa modificar dados
+
+- Tem lógica complexa com múltiplas operações
+
+- Precisa gerenciar transações
+
+- Vai executar operações em lote
