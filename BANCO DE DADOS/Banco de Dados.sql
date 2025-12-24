@@ -244,3 +244,39 @@ END
 
 SELECT * FROM dbo.get_order_by_client(1)--consulta table valued function 
 --(nesse exemplo, retorna todos os pedidos de um cliente)
+
+--AGGREGATE
+SELECT SUM(total) FROM [order]--soma os valores da coluna total
+
+SELECT AVG(price) FROM product--preço médio dos produtos
+
+SELECT COUNT(*) FROM client--contar número de clientes registrados
+
+SELECT MAX(quantity) FROM order_product--puxou a qtde max da tabela
+
+SELECT MIN(quantity) FROM order_product--puxou a qtde min da tabela
+
+SELECT MAX(quantity) as max_quantity, MIN(quantity) as min_quantity FROM order_product--puxou as qtdes max e min da tabela
+
+--SUBQUERIES
+--subquery no SELECT
+SELECT 
+c.name,
+(SELECT COUNT(*) FROM [order] o WHERE o.client_id = c.id)--retorna o número de pedidos de cada cliente
+FROM client c
+
+--subquery no WHERE
+SELECT *
+FROM product
+WHERE id IN (SELECT product_id from order_product)--retorna produtos vendidos pelo menos uma vez
+
+--subquery no FROM
+SELECT 
+    sub.client_id,
+    sub.total_vendas
+FROM
+(
+SELECT client_id, SUM(total) as total_vendas
+FROM [order] 
+GROUP BY client_id
+) sub --retorna total de vendas por clientes id

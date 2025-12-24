@@ -747,3 +747,4 @@ Produtos que vendem mais que a média de vendas:
 
 
 *Ambos os conceitos são fundamentais para consultas SQL avançadas e análise de dados eficiente.*
+
